@@ -1,0 +1,15 @@
+digraph A {
+  rankdir=TB; nodesep=0.6; ranksep=0.55;
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, color="#33475b", fillcolor="#eef3f8", margin="0.25,0.12"];
+  edge [fontname="Helvetica", fontsize=10, color="#33475b"];
+  subgraph cluster_u { label="Perdoruesit (Browser: desktop / mobil)"; fontname="Helvetica-Bold"; style="rounded,dashed"; color="#8899aa";
+    admin [label="Admin / Menaxher"]; korrier [label="Korrier"]; klient [label="Klient\n(gjurmim pa login)"]; }
+  subgraph cluster_b { label="Backend – Python / Django (deploy ne Render)"; fontname="Helvetica-Bold"; style="rounded"; color="#33475b";
+    fe [label="Frontend\nDjango Templates + Bootstrap + JavaScript", fillcolor="#fff4e0"];
+    api [label="REST API\nDjango REST Framework\n(/api/auth, /api/shipments, /api/track)", fillcolor="#e6f4ea"];
+    logic [label="Logjika e biznesit\nAutentikim, role/leje, validim,\nndryshim statusi, historiku"];
+    orm [label="Django ORM + Migrations"]; }
+  db [label="Databaza PostgreSQL\n(SQLite gjate zhvillimit)", shape=cylinder, fillcolor="#e8eaf6"];
+  admin -> fe [label=" HTTPS"]; korrier -> fe [label=" HTTPS"]; klient -> fe [label=" HTTPS"];
+  fe -> api [label=" fetch / JSON"]; api -> logic; logic -> orm; orm -> db [label=" SQL"];
+}
