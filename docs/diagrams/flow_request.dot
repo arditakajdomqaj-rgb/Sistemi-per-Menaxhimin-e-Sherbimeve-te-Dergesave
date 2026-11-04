@@ -1,0 +1,20 @@
+digraph F {
+  rankdir=LR; nodesep=0.5; ranksep=0.4; newrank=true;
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, fillcolor="#eef3f8", color="#33475b"];
+  edge [color="#33475b", fontname="Helvetica", fontsize=9];
+  a [label="Request\nPATCH /api/shipments/31/status\n{\"status\":\"PICKED_UP\"}", fillcolor="#fff4e0"];
+  b [label="urls.py\ngjen view-n"];
+  c [label="Autentikimi\nToken → user\n(401 nese mungon)"];
+  d [label="Permission\na eshte dergesa e tij?\n(403 nese jo)"];
+  e [label="Serializer\nvalidon input-in\n(400 nese gabim)"];
+  f [label="services.py\nrregulli i statusit\n+ historiku"];
+  g [label="ORM → SQL\nUPDATE shipment\nINSERT history", shape=cylinder, fillcolor="#e8eaf6"];
+  h [label="Response 200\nJSON me dergesen", fillcolor="#e6f4ea"];
+  {rank=same; a; h;}
+  {rank=same; b; g;}
+  {rank=same; c; f;}
+  {rank=same; d; e;}
+  a->b->c->d;
+  d->e;
+  h->g->f->e [dir=back];
+}
