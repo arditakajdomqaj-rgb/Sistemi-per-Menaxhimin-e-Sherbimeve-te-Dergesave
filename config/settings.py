@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework.authtoken",
     "accounts",
     "shipments",
 ]
@@ -78,3 +79,20 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_URL = "/admin/login/"
+
+# Django REST Framework
+REST_FRAMEWORK = {
+    # Token per Postman / frontend, Session per faqen e API-se ne browser.
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    # Si parazgjedhje cdo endpoint kerkon perdorues te kyçur.
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+    # Te gjitha gabimet kthehen ne te njejtin format JSON.
+    "EXCEPTION_HANDLER": "config.exceptions.custom_exception_handler",
+}
