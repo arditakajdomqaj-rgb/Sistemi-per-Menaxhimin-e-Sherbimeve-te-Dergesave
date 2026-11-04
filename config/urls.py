@@ -1,7 +1,9 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # Endpoint-et e API-se shtohen ne Raportin 2 (api/auth, api/shipments, api/track).
+    path("api/", include("accounts.urls")),
+    path("api/", include("shipments.urls")),
+    path("api-auth/", include("rest_framework.urls")),  # login per faqen e API-se ne browser
 ]
