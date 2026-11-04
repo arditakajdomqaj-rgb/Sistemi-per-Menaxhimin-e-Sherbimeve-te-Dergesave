@@ -1,4 +1,7 @@
-"""Modeli fillestar i te dhenave (Raporti 1). Do te zgjerohet ne Raportin 2."""
+"""Modelet e te dhenave per dergesat dhe historikun e statuseve."""
+import secrets
+from decimal import Decimal
+
 from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -14,10 +17,39 @@ class ShipmentStatus(models.TextChoices):
     CANCELLED = "CANCELLED", "Anuluar"
 
 
+# Rrjedha e lejuar e statuseve: nga cili status ne cilin mund te kalohet.
+# DELIVERED dhe CANCELLED jane perfundimtare, nuk ndryshohen me.
+ALLOWED_TRANSITIONS = {
+    ShipmentStatus.CREATED: [ShipmentStatus.ASSIGNED, ShipmentStatus.CANCELLED],
+    ShipmentStatus.ASSIGNED: [ShipmentStatus.PICKED_UP, ShipmentStatus.CANCELLED],
+    ShipmentStatus.PICKED_UP: [ShipmentStatus.IN_TRANSIT, ShipmentStatus.CANCELLED],
+    ShipmentStatus.IN_TRANSIT: [ShipmentStatus.DELIVERED, ShipmentStatus.FAILED],
+    ShipmentStatus.FAILED: [ShipmentStatus.ASSIGNED, ShipmentStatus.CANCELLED],
+    ShipmentStatus.DELIVERED: [],
+    ShipmentStatus.CANCELLED: [],
+}
+
+
+def generate_tracking_code():
+    """Kod unik dhe i rastesishem, p.sh. DRG-2026-4F9A1C.
+
+    Nuk perdoret numer rendor (000001, 000002...), qe dikush te mos i gjeje
+    kodet e dergesave te tjera duke i provuar njera pas tjetres.
+    """
+    from django.utils import timezone
+
+    while True:
+        code = f"DRG-{timezone.now().year}-{secrets.token_hex(3).upper()}"
+        if not Shipment.objects.filter(tracking_code=code).exists():
+            return code
+
+
 class Shipment(models.Model):
     """Nje dergese (pako) qe regjistrohet nga admini dhe dorezohet nga nje korrier."""
 
-    tracking_code = models.CharField(max_length=20, unique=True, db_index=True)
+    tracking_code = models.CharField(
+        max_length=20, unique=True, db_index=True, default=generate_tracking_code, editable=False
+    )
     sender_name = models.CharField(max_length=100)
     sender_phone = models.CharField(max_length=20)
     receiver_name = models.CharField(max_length=100)
@@ -26,10 +58,10 @@ class Shipment(models.Model):
     delivery_address = models.CharField(max_length=255)
     city = models.CharField(max_length=60)
     weight_kg = models.DecimalField(
-        max_digits=6, decimal_places=2, validators=[MinValueValidator(0.01)]
+        max_digits=6, decimal_places=2, validators=[MinValueValidator(Decimal("0.01"))]
     )
     price = models.DecimalField(
-        max_digits=8, decimal_places=2, validators=[MinValueValidator(0)]
+        max_digits=8, decimal_places=2, validators=[MinValueValidator(Decimal("0"))]
     )
     status = models.CharField(
         max_length=15, choices=ShipmentStatus.choices, default=ShipmentStatus.CREATED
@@ -52,6 +84,10 @@ class Shipment(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        indexes = [models.Index(fields=["status"]), models.Index(fields=["city"])]
+
+    def can_change_to(self, new_status):
+        return new_status in ALLOWED_TRANSITIONS.get(self.status, [])
 
     def __str__(self):
         return f"{self.tracking_code} - {self.get_status_display()}"
