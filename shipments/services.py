@@ -31,7 +31,7 @@ def create_shipment(data, user):
     """Krijon dergesen dhe rekordin e pare ne historik (CREATED)."""
     shipment = Shipment.objects.create(**data, created_by=user)
     StatusHistory.objects.create(
-        shipment=shipment, status=ShipmentStatus.CREATED, note="Dergesa u regjistrua", changed_by=user
+        shipment=shipment, status=ShipmentStatus.CREATED, note="Shipment registered", changed_by=user
     )
     return shipment
 
@@ -43,7 +43,7 @@ def assign_courier(shipment, courier_id, user):
     if courier is None:
         raise ApiError("INVALID_COURIER", "Korrieri nuk ekziston ose nuk eshte aktiv.")
     shipment.courier = courier
-    return _set_status(shipment, ShipmentStatus.ASSIGNED, user, note=f"U caktua te {courier.get_full_name()}")
+    return _set_status(shipment, ShipmentStatus.ASSIGNED, user, note=f"Assigned to {courier.get_full_name()}")
 
 
 @transaction.atomic
@@ -71,4 +71,4 @@ def cancel_shipment(shipment, user, note=""):
             "Nje dergese e dorezuar ose e anuluar nuk mund te anulohet.",
             http.HTTP_409_CONFLICT,
         )
-    return _set_status(shipment, ShipmentStatus.CANCELLED, user, note or "Dergesa u anulua")
+    return _set_status(shipment, ShipmentStatus.CANCELLED, user, note or "Shipment cancelled")

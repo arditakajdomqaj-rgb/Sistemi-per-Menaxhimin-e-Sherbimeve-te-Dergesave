@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}My deliveries · ShipQuick{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>My deliveries</h1>
+    <p>Shipments assigned to you.</p>
+  </div>
+  <button class="btn btn-outline-secondary btn-sm" id="btn-refresh" type="button"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
+</div>
+<div class="seg mb-3" id="tabs" role="tablist">
+  <button class="active" data-tab="active" type="button">Active<span class="count" data-count="active"></span></button>
+  <button data-tab="done" type="button">Completed<span class="count" data-count="done"></span></button>
+</div>
+<div id="cards"></div>
+{% include "partials/status_modal.html" %}
+{% endblock %}
+{% block page_js %}
+<script src="{% static 'js/status_action.js' %}"></script>
+<script src="{% static 'js/pages/courier.js' %}"></script>
+{% endblock %}

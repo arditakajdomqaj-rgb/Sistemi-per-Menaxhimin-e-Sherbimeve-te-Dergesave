@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Sign in · ShipQuick{% endblock %}
+{% block body %}
+<div class="auth">
+  <section class="auth-side">
+    <span class="brand">
+      <span class="brand-mark"><i class="bi bi-box-seam"></i></span>
+      <span><span class="brand-name d-block">ShipQuick</span><span class="brand-sub">Shipment management system</span></span>
+    </span>
+    <h2>Manage every delivery, from pickup to the <span class="hl">customer's door.</span></h2>
+    <div class="auth-feature"><i class="bi bi-grid"></i>
+      <div><strong>One dashboard</strong>Create shipments, assign couriers and follow their status in real time.</div></div>
+    <div class="auth-feature"><i class="bi bi-phone"></i>
+      <div><strong>Built for couriers</strong>Couriers update each delivery from their phone in one tap.</div></div>
+    <div class="auth-feature"><i class="bi bi-search"></i>
+      <div><strong>Public tracking</strong>Customers follow their parcel with a tracking code, no account needed.</div></div>
+    <div class="auth-foot">Projekt – Praktike Profesionale · 2026/2027</div>
+  </section>
+
+  <section class="auth-main">
+    <div class="auth-form">
+      <h1 class="mb-4 text-center">Sign in</h1>
+
+      <div id="login-info" class="alert alert-secondary d-none"><i class="bi bi-info-circle me-1"></i>Your session has expired. Please sign in again.</div>
+      <div id="login-error" class="alert alert-danger d-none" role="alert"></div>
+
+      <form id="login-form" novalidate>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <div class="input-icon"><i class="bi bi-person"></i>
+            <input type="text" class="form-control" id="username" name="username" autocomplete="username" required autofocus></div>
+          <div class="invalid-feedback d-block" data-for="username"></div>
+        </div>
+        <div class="mb-4">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-icon"><i class="bi bi-lock"></i>
+            <input type="password" class="form-control" id="password" name="password" autocomplete="current-password" required></div>
+          <div class="invalid-feedback d-block" data-for="password"></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg w-100" id="login-btn">Sign in</button>
+      </form>
+
+      {% if show_demo_accounts %}
+      <div class="demo-box mt-4">
+        <div class="fw-semibold mb-1">Demo accounts (development only)</div>
+        <div><span class="mono">admin</span> · administrator &nbsp;|&nbsp; <span class="mono">korrier1</span> · courier</div>
+        <div>Password: <span class="mono">Test1234!</span></div>
+      </div>
+      {% endif %}
+
+      <a href="/track" class="d-inline-flex align-items-center gap-1 mt-4 small text-secondary">
+        <i class="bi bi-search"></i> Track a shipment without signing in</a>
+    </div>
+  </section>
+</div>
+{% endblock %}
+{% block page_js %}<script src="{% static 'js/pages/login.js' %}"></script>{% endblock %}

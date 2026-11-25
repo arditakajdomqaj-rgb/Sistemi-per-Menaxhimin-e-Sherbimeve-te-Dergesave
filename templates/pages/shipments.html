@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Shipments · ShipQuick{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1>Shipments</h1>
+    <p>Search, filter and manage all shipments.</p>
+  </div>
+  <button type="button" class="btn btn-primary" id="btn-new"><i class="bi bi-plus-lg me-1"></i>New shipment</button>
+</div>
+
+<div class="card">
+  <form class="card-body border-bottom" id="filters">
+    <div class="row g-2 align-items-end">
+      <div class="col-xl-3 col-lg-4 col-md-6">
+        <label class="form-label" for="flt-search">Search</label>
+        <div class="input-icon"><i class="bi bi-search"></i>
+          <input class="form-control" id="flt-search" name="search" placeholder="Tracking code or recipient"></div>
+      </div>
+      <div class="col-xl-2 col-lg-4 col-md-3 col-6">
+        <label class="form-label" for="flt-status">Status</label>
+        <select class="form-select" id="flt-status" name="status"><option value="">All statuses</option></select>
+      </div>
+      <div class="col-xl-2 col-lg-4 col-md-3 col-6">
+        <label class="form-label" for="flt-courier">Courier</label>
+        <select class="form-select" id="flt-courier" name="courier"><option value="">All couriers</option></select>
+      </div>
+      <div class="col-xl-2 col-lg-4 col-md-4">
+        <label class="form-label" for="flt-city">City</label>
+        {# Lista e qyteteve (city-list) eshte ne partials/shipment_form_modal.html #}
+        <input class="form-control" id="flt-city" name="city" list="city-list" placeholder="All cities">
+      </div>
+      <div class="col-xl-3 col-lg-8 col-md-8">
+        <label class="form-label" for="flt-from">Created between</label>
+        <div class="d-flex gap-2">
+          <input class="form-control date-input" id="flt-from" name="date_from" type="date" aria-label="From date">
+          <input class="form-control date-input" id="flt-to" name="date_to" type="date" aria-label="To date">
+        </div>
+      </div>
+    </div>
+    <div class="mt-3 d-flex gap-2">
+      <button class="btn btn-primary btn-sm" type="submit"><i class="bi bi-funnel me-1"></i>Apply filters</button>
+      <button class="btn btn-outline-secondary btn-sm" type="button" id="btn-reset">Clear</button>
+    </div>
+  </form>
+  <div id="list"></div>
+</div>
+
+{% include "partials/shipment_form_modal.html" %}
+{% endblock %}
+{% block page_js %}
+<script src="{% static 'js/shipment_form.js' %}"></script>
+<script src="{% static 'js/pages/shipments.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "public_base.html" %}
+{% load static %}
+{% block title %}Track shipment · ShipQuick{% endblock %}
+
+{% block hero %}
+<section class="track-hero">
+  {# Harte dekorative (vetem figure). Nuk tregon vendndodhje reale: sistemi nuk ka GPS. #}
+  <svg class="track-map" viewBox="0 0 1200 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <g class="map-roads">
+      <path d="M-20 70 C 200 90, 340 40, 560 80 S 900 140, 1220 90"/>
+      <path d="M-20 250 C 180 230, 360 300, 600 260 S 960 200, 1220 250"/>
+      <path d="M140 -20 C 160 120, 120 220, 170 380"/>
+      <path d="M420 -20 C 400 140, 460 240, 430 380"/>
+      <path d="M760 -20 C 790 110, 730 230, 780 380"/>
+      <path d="M1040 -20 C 1010 120, 1080 250, 1050 380"/>
+      <path d="M-20 170 L 1220 175"/>
+      <path d="M260 -20 L 640 380"/>
+      <path d="M900 -20 L 600 380"/>
+    </g>
+    <g class="map-roads thin">
+      <path d="M0 30 H1200 M0 120 H1200 M0 210 H1200 M0 300 H1200"/>
+      <path d="M70 0 V360 M300 0 V360 M560 0 V360 M840 0 V360 M1120 0 V360"/>
+    </g>
+    {# Vija e rruges zbehet ne mes, qe te mos bie mbi tekst. #}
+    <defs>
+      <radialGradient id="route-fade" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#000"/><stop offset=".55" stop-color="#000"/><stop offset=".8" stop-color="#fff"/>
+      </radialGradient>
+      <mask id="route-mask"><rect x="0" y="0" width="1200" height="360" fill="url(#route-fade)"/></mask>
+    </defs>
+    <g mask="url(#route-mask)">
+      <path class="map-route" d="M150 285 C 300 260, 360 160, 520 170 S 820 120, 1010 70"/>
+      <circle class="map-pin-start" cx="150" cy="285" r="7"/>
+      <g class="map-pin" transform="translate(1010 70)">
+        <circle r="22" class="pulse"/>
+        <circle r="9"/>
+      </g>
+    </g>
+  </svg>
+
+  <div class="container position-relative">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7 text-center">
+        <div class="track-eyebrow"><i class="bi bi-broadcast me-1"></i>Real-time shipment status</div>
+        <h1>Track your shipment</h1>
+        <p>Enter the tracking code you received, for example <span class="mono">DRG-2026-4F9A1C</span>.</p>
+
+        <form id="track-form" novalidate>
+          <div class="track-search">
+            <div class="input-icon flex-grow-1"><i class="bi bi-upc-scan"></i>
+              <input type="text" class="form-control form-control-lg text-uppercase mono" name="code" id="code"
+                     placeholder="DRG-2026-XXXXXX" autocomplete="off" required aria-label="Tracking code"></div>
+            <button class="btn btn-primary btn-lg px-4" type="submit" id="track-btn"><i class="bi bi-search me-2 d-none d-sm-inline"></i>Track</button>
+          </div>
+          <div class="invalid-feedback d-block text-start track-feedback" data-for="code"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div id="track-result" class="track-result"></div>
+{% endblock %}
+{% block page_js %}<script src="{% static 'js/pages/track.js' %}"></script>{% endblock %}

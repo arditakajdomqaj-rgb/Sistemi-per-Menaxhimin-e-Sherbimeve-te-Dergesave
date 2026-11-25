@@ -1,0 +1,20 @@
+digraph F {
+  rankdir=TB; nodesep=0.35; ranksep=0.45; newrank=true;
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, color="#33475b", fillcolor="#eef3f8", margin="0.18,0.08"];
+  edge [color="#33475b", fontname="Helvetica", fontsize=9];
+  subgraph cluster_b { label="Browser"; fontname="Helvetica-Bold"; style="rounded,dashed"; color="#8899aa";
+    subgraph cluster_p { label="Faqet (templates/pages + static/js/pages)"; fontname="Helvetica"; style="rounded"; color="#c9d3de";
+      login [label="login"]; dash [label="dashboard"]; ships [label="shipments"]; det [label="shipment_detail"]; cour [label="courier"]; couriers [label="couriers"]; track [label="track"]; }
+    subgraph cluster_c { label="Komponente te perbashketa (partials + js)"; fontname="Helvetica"; style="rounded"; color="#c9d3de";
+      form [label="shipment_form\n(krijim / ndryshim)", fillcolor="#fff4e0"]; stat [label="status_action\n(ndryshim statusi)", fillcolor="#fff4e0"]; nav [label="sidebar / layout.js", fillcolor="#fff4e0"]; }
+    subgraph cluster_s { label="Sherbimet (static/js)"; fontname="Helvetica"; style="rounded"; color="#c9d3de";
+      api [label="api.js\nthirrjet e API-se + gabimet", fillcolor="#e6f4ea"]; auth [label="auth.js\ntoken-i + rolet", fillcolor="#e6f4ea"]; ui [label="ui.js\nbadge, loading / empty / error", fillcolor="#e6f4ea"]; }
+  }
+  be [label="Backend Django\nREST API /api/...", fillcolor="#e8eaf6"];
+  db [label="Databaza", shape=cylinder, fillcolor="#e8eaf6"];
+  {ships det} -> form; {det cour} -> stat;
+  {login dash ships det cour couriers track form stat} -> api [color="#8a97a6"];
+  api -> auth [label=" token", style=dashed];
+  api -> be [label=" fetch() JSON\n Authorization: Token", penwidth=1.6];
+  be -> db;
+}

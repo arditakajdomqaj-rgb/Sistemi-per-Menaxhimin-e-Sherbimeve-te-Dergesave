@@ -3,7 +3,7 @@ import re
 
 from rest_framework import serializers
 
-from .models import Shipment, StatusHistory
+from .models import ALLOWED_TRANSITIONS, Shipment, StatusHistory
 
 PHONE_RE = re.compile(r"^\+?[0-9 ]{8,15}$")
 
@@ -27,6 +27,10 @@ class ShipmentSerializer(serializers.ModelSerializer):
     history = StatusHistorySerializer(many=True, read_only=True)
     sender_phone = serializers.CharField(validators=[validate_phone])
     receiver_phone = serializers.CharField(validators=[validate_phone])
+    # Statuset ne te cilat dergesa mund te kaloje nga statusi aktual.
+    # Frontend-i i perdor per te shfaqur vetem butonat e lejuar,
+    # keshtu rregullat e statuseve mbeten vetem ne backend (models.py).
+    next_statuses = serializers.SerializerMethodField()
 
     class Meta:
         model = Shipment
@@ -35,10 +39,14 @@ class ShipmentSerializer(serializers.ModelSerializer):
             "sender_name", "sender_phone", "receiver_name", "receiver_phone",
             "pickup_address", "delivery_address", "city", "weight_kg", "price",
             "courier", "courier_name", "created_by", "created_at", "updated_at", "history",
+            "next_statuses",
         ]
         # Keto fusha nuk ndryshohen direkt: kodi gjenerohet, statusi dhe korrieri
         # ndryshojne vetem permes /status dhe /assign (qe te ruhet historiku).
         read_only_fields = ["tracking_code", "status", "courier", "created_by", "created_at", "updated_at"]
+
+    def get_next_statuses(self, obj):
+        return list(ALLOWED_TRANSITIONS.get(obj.status, []))
 
 
 class ShipmentListSerializer(ShipmentSerializer):
@@ -48,6 +56,7 @@ class ShipmentListSerializer(ShipmentSerializer):
         fields = [
             "id", "tracking_code", "status", "receiver_name", "city",
             "delivery_address", "weight_kg", "price", "courier", "courier_name", "created_at",
+            "receiver_phone", "next_statuses",
         ]
 
 

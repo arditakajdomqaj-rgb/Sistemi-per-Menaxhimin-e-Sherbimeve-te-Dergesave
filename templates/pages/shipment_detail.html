@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Shipment · ShipQuick{% endblock %}
+{% block content %}
+<a href="/shipments" class="back-link" id="back-link"><i class="bi bi-arrow-left"></i> Back to shipments</a>
+<div id="detail"></div>
+{% include "partials/shipment_form_modal.html" %}
+{% include "partials/status_modal.html" %}
+{% endblock %}
+{% block page_js %}
+<script src="{% static 'js/shipment_form.js' %}"></script>
+<script src="{% static 'js/status_action.js' %}"></script>
+<script src="{% static 'js/pages/shipment_detail.js' %}"></script>
+{% endblock %}

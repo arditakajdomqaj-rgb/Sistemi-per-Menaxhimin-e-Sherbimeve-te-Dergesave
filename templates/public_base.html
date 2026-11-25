@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+  <header class="public-top">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a class="brand" href="/track">
+        <span class="brand-mark"><i class="bi bi-box-seam"></i></span>
+        <span><span class="brand-name d-block">ShipQuick</span><span class="brand-sub">Shipment tracking</span></span>
+      </a>
+      <a class="btn btn-outline-secondary btn-sm" href="/login" id="public-signin">Sign in</a>
+    </div>
+  </header>
+  {% block hero %}{% endblock %}
+  <main class="container pb-5">
+    {% block content %}{% endblock %}
+  </main>
+{% endblock %}

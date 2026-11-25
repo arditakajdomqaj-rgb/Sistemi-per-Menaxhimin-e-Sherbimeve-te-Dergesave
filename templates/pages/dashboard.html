@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Dashboard · ShipQuick{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 id="dash-title">Dashboard</h1>
+    <p>Here's what's happening with your deliveries today.</p>
+  </div>
+  <a href="/shipments?new=1" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>New shipment</a>
+</div>
+<div id="dash-content"></div>
+{% endblock %}
+{% block page_js %}<script src="{% static 'js/pages/dashboard.js' %}"></script>{% endblock %}

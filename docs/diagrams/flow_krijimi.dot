@@ -1,0 +1,17 @@
+digraph K {
+  rankdir=LR; nodesep=0.5; ranksep=0.4; newrank=true;
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, fillcolor="#eef3f8", color="#33475b"];
+  edge [color="#33475b", fontname="Helvetica"];
+  a [label="1. Veprimi\nAdmini ploteson formen\ndhe klikon \"Ruaj\"", fillcolor="#fff4e0"];
+  b [label="2. Validimi ne browser\nshipment_form.js\n(fushat, telefoni, pesha)"];
+  c [label="3. Request\napi.js → POST /api/shipments\n+ Authorization: Token"];
+  d [label="4. Backend\nview → serializer (validim)\n→ services.create_shipment"];
+  e [label="5. Databaza\nINSERT shipment\nINSERT statushistory", shape=cylinder, fillcolor="#e8eaf6"];
+  f [label="6. Response\n201 Created + JSON\n(tracking_code)"];
+  g [label="7. UI update\nmbyllet forma, toast me kodin,\nlista rifreskohet", fillcolor="#e6f4ea"];
+  {rank=same; a; g;} {rank=same; b; f;} {rank=same; c; e;}
+  {rank=same; d;}
+  a->b->c->d; d->e;
+  g->f->e [dir=back];
+  b->a [label=" gabim: shfaqet\n poshte fushes", style=dashed, fontsize=9, constraint=false, color="#c0392b", fontcolor="#c0392b"];
+}

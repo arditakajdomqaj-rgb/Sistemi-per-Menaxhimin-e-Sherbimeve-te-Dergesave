@@ -45,12 +45,12 @@ PATHS = {
     ShipmentStatus.CANCELLED: [ShipmentStatus.CANCELLED],
 }
 NOTES = {
-    ShipmentStatus.ASSIGNED: "U caktua te korrieri",
-    ShipmentStatus.PICKED_UP: "Pakoja u mor nga derguesi",
-    ShipmentStatus.IN_TRANSIT: "Ne rruge per dorezim",
-    ShipmentStatus.DELIVERED: "U dorezua te marresi",
-    ShipmentStatus.FAILED: "Marresi nuk u pergjigj ne telefon",
-    ShipmentStatus.CANCELLED: "Anuluar me kerkese te derguesit",
+    ShipmentStatus.ASSIGNED: "Assigned to courier",
+    ShipmentStatus.PICKED_UP: "Parcel picked up from sender",
+    ShipmentStatus.IN_TRANSIT: "Out for delivery",
+    ShipmentStatus.DELIVERED: "Delivered to recipient",
+    ShipmentStatus.FAILED: "Recipient did not answer the phone",
+    ShipmentStatus.CANCELLED: "Cancelled at the sender's request",
 }
 
 
@@ -114,7 +114,7 @@ class Command(BaseCommand):
                 created_by=admin, courier=courier, status=final,
             )
             t = created_at
-            history = [StatusHistory(shipment=s, status=ShipmentStatus.CREATED, note="Dergesa u regjistrua", changed_by=admin)]
+            history = [StatusHistory(shipment=s, status=ShipmentStatus.CREATED, note="Shipment registered", changed_by=admin)]
             for step in PATHS[final]:
                 who = courier if step in (ShipmentStatus.PICKED_UP, ShipmentStatus.IN_TRANSIT,
                                           ShipmentStatus.DELIVERED, ShipmentStatus.FAILED) else admin

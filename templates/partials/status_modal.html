@@ -1,0 +1,22 @@
+<!-- Confirmation for a status change (and cancellation), with an optional note -->
+<div class="modal fade" id="status-modal" tabindex="-1" aria-labelledby="status-modal-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" id="status-form" novalidate>
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="status-modal-title"></h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-3" id="status-modal-text"></p>
+        <div id="status-form-error" class="alert alert-danger d-none" role="alert"></div>
+        <label class="form-label" for="status-note" id="status-note-label">Note</label>
+        <textarea class="form-control" id="status-note" name="note" rows="3" maxlength="500"></textarea>
+        <div class="invalid-feedback" data-for="note"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Back</button>
+        <button type="submit" class="btn btn-primary" id="status-confirm">Confirm</button>
+      </div>
+    </form>
+  </div>
+</div>

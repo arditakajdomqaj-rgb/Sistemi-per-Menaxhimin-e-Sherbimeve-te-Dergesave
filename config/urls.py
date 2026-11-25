@@ -6,4 +6,5 @@ urlpatterns = [
     path("api/", include("accounts.urls")),
     path("api/", include("shipments.urls")),
     path("api-auth/", include("rest_framework.urls")),  # login per faqen e API-se ne browser
+    path("", include("web.urls")),  # faqet e frontend-it
 ]
